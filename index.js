@@ -12,7 +12,7 @@ mongoose.connect(
 		"mongodb+srv://Admin:qwerty123@todoapp.m5m8w.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
 	{
 		useNewURLParser: true,
-		useUndifiendTopology: true,
+		useUnifiedTopology: true,
 		autoIndex: true,
 	},
 	() => {
@@ -21,7 +21,7 @@ mongoose.connect(
 );
 //import express router initialized in routes/api.js
 const router = require("./routes/api");
-app.use("./api", router);
+app.use("/api", router);
 
 //Set port variable
 const PORT = process.env.port || 5000;
