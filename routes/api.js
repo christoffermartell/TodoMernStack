@@ -32,22 +32,22 @@ router.get("/gettodos", (req, res) => {
 
 // Get a specific Todo
 router.get("/gettodo/:id", (req, res) => {
-	const { title, content } = req.body;
 	const _id = req.params.id;
-	PostTodo.findById(_id, { title, content }, (err) => {
+	PostTodo.findById(_id, (err, todo) => {
+		// object destructuring to only get title + content and not the entire object
+		const { title, content } = todo;
 		if (err) {
 			res.status(500).json({ message: "Internal server error" });
 		} else {
-			res.status(200).json({ content });
+			res.status(200).json({ title, content });
 		}
 	});
 });
-/*
-//Update post route
-router.put("/updatepost/:id", (req, res) => {
+
+router.put("/updatetodo/:id", (req, res) => {
 	const { title, content } = req.body;
 	const _id = req.params.id;
-	Post.findByIdAndUpdate(_id, { title, content }, (err) => {
+	PostTodo.findByIdAndUpdate(_id, { title, content }, (err) => {
 		if (err) {
 			res.status(500).json({ message: "An error occured updating" });
 		} else {
@@ -57,9 +57,9 @@ router.put("/updatepost/:id", (req, res) => {
 });
 
 //Delete post route
-router.delete("/deletepost/:id", (req, res) => {
+router.delete("/deletetodo/:id", (req, res) => {
 	const _id = req.params.id;
-	Post.findByIdAndDelete(_id, (err) => {
+	PostTodo.findByIdAndDelete(_id, (err) => {
 		if (err) {
 			res.status(500).json({ message: "An error occured deleting" });
 		} else {
@@ -67,6 +67,5 @@ router.delete("/deletepost/:id", (req, res) => {
 		}
 	});
 });
-*/
 
 module.exports = router;
