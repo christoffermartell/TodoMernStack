@@ -9,6 +9,7 @@ router.post("/newposttodo", (req, res) => {
 	const newContent = new PostTodo({
 		title: req.body.title,
 		content: req.body.content,
+		completed: req.body.completed,
 	});
 	newContent.save((err) => {
 		if (err) {
@@ -35,19 +36,19 @@ router.get("/gettodo/:id", (req, res) => {
 	const _id = req.params.id;
 	PostTodo.findById(_id, (err, todo) => {
 		// object destructuring to only get title + content and not the entire object
-		const { title, content } = todo;
+		const { title, content, completed } = todo;
 		if (err) {
 			res.status(500).json({ message: "Internal server error" });
 		} else {
-			res.status(200).json({ title, content });
+			res.status(200).json({ title, content, completed });
 		}
 	});
 });
 
 router.put("/updatetodo/:id", (req, res) => {
-	const { title, content } = req.body;
+	const { title, content, completed } = req.body;
 	const _id = req.params.id;
-	PostTodo.findByIdAndUpdate(_id, { title, content }, (err) => {
+	PostTodo.findByIdAndUpdate(_id, { title, content, completed }, (err) => {
 		if (err) {
 			res.status(500).json({ message: "An error occured updating" });
 		} else {
