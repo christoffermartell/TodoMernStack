@@ -1,15 +1,19 @@
+import React from "react";
 import Todo from "./todo"
 
-const AllTodos = () =>{
-return (
-    <div>
-        <Todo></Todo>
-        <Todo></Todo>
-        <Todo></Todo>
-        <Todo></Todo>
+const AllTodos = (props) => {
 
-    </div>
-)
+    const todoInputs = props.todoInputs;
+
+    return (
+        <div>
+            {
+                todoInputs.map((todo,i) => (
+                    <Todo key={i} todo={todo} />
+                ))
+            }
+        </div>
+    )
 }
 
 export default AllTodos;
