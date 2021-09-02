@@ -9,7 +9,7 @@ const AllTodos = (props) => {
         <div>
             {
                 todoInputs.map((todo,i) => (
-                    <Todo key={i} todo={todo} />
+                    <Todo key={i} todo={todo} deleteTodo={props.deleteTodo} />
                 ))
             }
         </div>

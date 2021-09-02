@@ -9,11 +9,17 @@ function App() {
 
 	const [todoInputs, setTodoInputs] = useState([]);
 
+	const deleteTodo = (todo) => {
+		setTodoInputs((prevTodoInputs) => {
+			return prevTodoInputs.filter((prevTodoInputs) => prevTodoInputs !== todo);
+		});
+	}
+
 	return (
 		<div className="container">
 			<Title />
 			<TodoList setTodoInputs={setTodoInputs} />
-			<AllTodos todoInputs={todoInputs} ></AllTodos>
+			<AllTodos todoInputs={todoInputs} deleteTodo={deleteTodo} ></AllTodos>
 		</div>
 	);
 }
