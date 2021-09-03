@@ -40,15 +40,24 @@ const AllTodos = (props) => {
 		const data = await TodoService.getPostedTodos();
 		if (data && !data.msgError) {
 		setTodos(data.todos)
+		resetFormFields();
 		}
 	}
 }
+const resetFormFields = () => {
+    setPostTodo({
+      title: "",
+      content: "",
+	  completed: false
+      
+    });
+  };
 	 
 	return (
 		<div>
 		<form onSubmit={saveTodo} >
 	<input required onChange={handleInput}
-		value={todos.title}
+		value={postTodo.title}
 		name="title"
 		type="text"
 		className="form-control rounded-0"
@@ -56,7 +65,7 @@ const AllTodos = (props) => {
 		id="todoInputField"
 	></input>
 	<input required onChange={handleInput}
-		value={todos.content}
+		value={postTodo.content}
 		name="content"
 		type="text"
 		className="form-control rounded-0"
