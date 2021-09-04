@@ -42,6 +42,52 @@ const TodoService = {
 			return { error: error };
 		}
 	},
+	deleteTodo: async (id) => {
+		try {
+			const res = await fetch(`/api/deletetodo/${id}`, {
+				method: "delete",
+			});
+			if (res.status !== 401) {
+				const data = await res.json();
+				return data;
+			} else {
+				return {
+					message: {
+						msgBody: "Something went wrong while deleting the todo",
+						msgError: true,
+					},
+				}
+			}
+		} catch (error) {
+			return { error: error };
+		}
+	},
+	updateFinished: async (isChecked, id) => {
+		try {
+			const res = await fetch(`/api/updatetodo/${id}`, {
+				method: "put",
+				body: JSON.stringify({
+					completed: isChecked,
+				}),
+				headers: {
+					"Content-type": "application/json",
+				},
+			});
+			if (res.status !== 401) {
+				const data = await res.json();
+				return data;
+			} else {
+				return {
+					message: {
+						msgBody: "Something went wrong while updating the todo",
+						msgError: true,
+					},
+				};
+			}
+		} catch (error) {
+			return { error: error };
+		}
+	},
 };
 
 export default TodoService;

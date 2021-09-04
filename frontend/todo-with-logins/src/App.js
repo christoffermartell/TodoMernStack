@@ -7,24 +7,11 @@ import AllTodos from "./components/allTodos";
 function App() {
 	// useEffect för att hämta från backend ( API )
 
-	const [todoInputs, setTodoInputs] = useState([]);
-
-	const deleteTodo = (todo) => {
-		setTodoInputs((prevTodoInputs) => {
-			return prevTodoInputs.filter(
-				(prevTodoInputs) => prevTodoInputs !== todo
-			);
-		});
-	};
-
 	return (
 		<div className="container">
 			<Title />
 			{/* <TodoList setTodoInputs={setTodoInputs} /> */}
-			<AllTodos
-				todoInputs={todoInputs}
-				deleteTodo={deleteTodo}
-			></AllTodos>
+			<AllTodos></AllTodos>
 		</div>
 	);
 }
