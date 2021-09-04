@@ -11,15 +11,20 @@ function App() {
 
 	const deleteTodo = (todo) => {
 		setTodoInputs((prevTodoInputs) => {
-			return prevTodoInputs.filter((prevTodoInputs) => prevTodoInputs !== todo);
+			return prevTodoInputs.filter(
+				(prevTodoInputs) => prevTodoInputs !== todo
+			);
 		});
-	}
+	};
 
 	return (
 		<div className="container">
 			<Title />
-			<TodoList setTodoInputs={setTodoInputs} />
-			<AllTodos todoInputs={todoInputs} deleteTodo={deleteTodo} ></AllTodos>
+			{/* <TodoList setTodoInputs={setTodoInputs} /> */}
+			<AllTodos
+				todoInputs={todoInputs}
+				deleteTodo={deleteTodo}
+			></AllTodos>
 		</div>
 	);
 }
