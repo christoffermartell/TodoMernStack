@@ -2,9 +2,13 @@ const express = require("express");
 //Initialize express
 const app = express();
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 //Middleware for parsing json data
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors());
 
 //connect to mongodb database
 mongoose.connect(
@@ -16,7 +20,7 @@ mongoose.connect(
 		autoIndex: true,
 	},
 	() => {
-		console.log("Connected to databse");
+		console.log("Connected to database");
 	}
 );
 //import express router initialized in routes/api.js
