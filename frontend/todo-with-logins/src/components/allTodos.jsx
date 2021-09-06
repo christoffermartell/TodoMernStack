@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Todo from "./todo";
 import TodoService from "../services/TodoService";
+import Title from "./title";
 
 const AllTodos = () => {
 	const [todos, setTodos] = useState([]);
@@ -72,7 +73,9 @@ const AllTodos = () => {
 	};
 
 	return (
-		<div>
+		
+		<div style={{maxWidth:"60rem", textAlign:"center", margin:"auto"}}>
+			<Title></Title>
 			<form onSubmit={saveTodo}>
 				<input
 					required
