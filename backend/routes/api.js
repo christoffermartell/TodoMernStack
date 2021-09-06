@@ -9,7 +9,7 @@ const configPassport = require("../passport/passport"); // required to be able t
 const jwt = require("jsonwebtoken");
 
 //-------------------------- TODOS BELOW WITHOUT LOGIN --------------------------//
-
+/*
 // Add Todo
 router.post("/newposttodo", (req, res) => {
 	const newContent = new PostTodo({
@@ -50,33 +50,9 @@ router.get("/gettodo/:id", (req, res) => {
 		}
 	});
 });
-
-router.put("/updatetodo/:id", (req, res) => {
-	const { title, content, completed } = req.body;
-	const _id = req.params.id;
-	PostTodo.findByIdAndUpdate(_id, { title, content, completed }, (err) => {
-		if (err) {
-			res.status(500).json({ message: "An error occured updating" });
-		} else {
-			res.status(200).json({ message: "Post was successfully updated!" });
-		}
-	});
-});
-
-//Delete post route
-router.delete("/deletetodo/:id", (req, res) => {
-	const _id = req.params.id;
-	PostTodo.findByIdAndDelete(_id, (err) => {
-		if (err) {
-			res.status(500).json({ message: "An error occured deleting" });
-		} else {
-			res.status(200).json({ message: "Post was successfully deleted!" });
-		}
-	});
-});
-
+*/
 // -------------------------- TODOS WITH LOGINS -------------------------- //
-
+// create new todo for user
 router.post(
 	"/usersnewtodo",
 	passport.authenticate("jwt", { session: false }),
@@ -115,7 +91,7 @@ router.post(
 		});
 	}
 );
-
+// all users todo posts
 router.get(
 	"/getusertodo",
 	passport.authenticate("jwt", { session: false }),
@@ -138,6 +114,141 @@ router.get(
 					});
 				}
 			});
+	}
+);
+/*
+// get specific todo // testa med populate genom postens id eller något
+router.get(
+	"/getspecificusertodo/:id",
+	passport.authenticate("jwt", { session: false }),
+	(req, res) => {
+		const postId = req.params.id;
+		UserModel.findById({ _id: req.user.id })
+			.populate({ path: "postTodo", select: postId })
+			.exec((err, user) => {
+				if (err) {
+					res.status(500).json({
+						message: {
+							msgBody: "An error occurred",
+							msgError: true,
+						},
+					});
+				} else {
+					res.status(200).json({
+						postTodo: user.postTodo,
+						isAuthenticated: true,
+						msgError: false,
+					});
+				}
+			});
+	}
+);
+
+router.get(
+	"/getspecificusertodo/:id",
+	passport.authenticate("jwt", { session: false }),
+	(req, res) => {
+		const postId = req.params.id;
+		UserModel.findById({ _id: req.user.id, ObjectId: postId });
+		const { title, content, completed } = todo;
+		if (err) {
+			res.status(500).json({ message: "Internal server error" });
+		} else {
+			res.status(200).json({ title, content, completed });
+		}
+	}
+);*/
+
+// Get a specific Todo // funkar men lite skevt i säkerheten ORIGINAL, DENNA FUNKAR
+router.get(
+	"/getspecificusertodo/:id",
+	passport.authenticate("jwt", { session: false }),
+	(req, res) => {
+		const _id = req.params.id;
+		PostTodo.findById(_id, (err, todo) => {
+			// object destructuring to only get title + content and not the entire object
+			const { title, content, completed } = todo;
+			if (err) {
+				res.status(500).json({ message: "Internal server error" });
+			} else {
+				res.status(200).json({ title, content, completed });
+			}
+		});
+	}
+);
+/*
+// Get a specific Todo // funkar men lite skevt i säkerheten
+router.get(
+	"/getspecificusertodo/:id",
+	passport.authenticate("jwt", { session: false }),
+	(req, res) => {
+		const _id = req.params.id;
+		const userId = req.user.id;
+		PostTodo.findById(_id, (err, todo) => {
+			// object destructuring to only get title + content + completed and not the entire object
+			const { title, content, completed } = todo;
+			UserModel.findById(userId, (error, yeah) => {
+				if (error) {
+					res.status(500).json({ message: "Internal server error" });
+				} else {
+					res.status(200).json({ title, content, completed });
+				}
+			});
+			if (err) {
+				res.status(500).json({ message: "Internal server error" });
+			} else {
+				//res.status(200).json({ title, content, completed });
+			}
+		});
+	}
+);
+*/
+// edit / update todo post
+router.put(
+	"/updatetodo/:id",
+	passport.authenticate("jwt", { session: false }),
+	(req, res) => {
+		const { title, content, completed } = req.body;
+		const _id = req.params.id;
+		PostTodo.findByIdAndUpdate(
+			_id,
+			{ title, content, completed },
+			(err) => {
+				if (err) {
+					res.status(500).json({
+						message: {
+							msgBody: "An error occured updating",
+							msgError: true,
+						},
+					});
+				} else {
+					res.status(200).json({
+						message: {
+							msgBody: "Post was successfully updated!",
+							msgError: false,
+						},
+					});
+				}
+			}
+		);
+	}
+);
+
+//Delete post
+router.delete(
+	"/deletetodo/:id",
+	passport.authenticate("jwt", { session: false }),
+	(req, res) => {
+		const _id = req.params.id;
+		PostTodo.findByIdAndDelete(_id, (err) => {
+			if (err) {
+				res.status(500).json({ message: "An error occured deleting" });
+			} else {
+				res.status(200).json({
+					message: "Post was successfully deleted!",
+				});
+			}
+		});
 	}
 );
 
