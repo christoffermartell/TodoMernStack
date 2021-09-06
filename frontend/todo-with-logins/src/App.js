@@ -24,7 +24,7 @@ function App() {
 			<div className="container">
 				{/* <Title /> */}
 				{/* <TodoList setTodoInputs={setTodoInputs} /> */}
-				{/* <AllTodos></AllTodos> */}
+				{/* {<AllTodos></AllTodos>} */}
 			</div>
 		</Router>
 	);

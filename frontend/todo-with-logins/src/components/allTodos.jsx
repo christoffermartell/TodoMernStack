@@ -21,7 +21,7 @@ const AllTodos = () => {
 	useEffect(() => {
 		getPostedTodos();
 	}, []);
-	//	console.log("todos useState", todos);
+		console.log("todos useState", todos);
 
 	const handleInput = (e) => {
 		setPostTodo({ ...postTodo, [e.target.name]: e.target.value });

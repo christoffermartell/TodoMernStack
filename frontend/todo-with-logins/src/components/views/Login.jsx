@@ -1,4 +1,4 @@
-import react, {useState,useContext} from "react"
+import React, {useState,useContext} from "react"
 import {useHistory} from "react-router-dom"
 import {AuthContext} from "../../context/AuthContext"
 import AuthService from "../../services/AuthService"
@@ -7,7 +7,7 @@ export const Login = () => {
 
     const [userState,setUserState] = useState({username:"", password:""})
     const { setIsAuthenticated, setActiveUser} = useContext(AuthContext)
-    //  const history = useHistory()
+   //   const history = useHistory()
 
     const changeUserData = (e) =>{
         setUserState({...userState,[e.target.name]:e.target.value});
@@ -17,12 +17,13 @@ export const Login = () => {
         e.preventDefault();
         const data = await AuthService.login(userState);
         const { isAuthenticated,user} = data;
+        console.log(data);
         
         if(isAuthenticated){
         setIsAuthenticated(isAuthenticated)
         setActiveUser(user);
         alert("Logged in: " + JSON.stringify(user))
-        // history.push("/account");
+    //     history.push("/account");
         }
         
         

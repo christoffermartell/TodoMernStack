@@ -10,7 +10,7 @@ export const Navbar = () =>{
 
     const logout = async() =>{
         const data = await AuthService.logout();
-        if(data.succuess){
+        if(data.success){
             setIsAuthenticated(false)
             setActiveUser(data.user);
             setIsAuthenticated(false);
