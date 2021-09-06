@@ -8,49 +8,6 @@ const passport = require("passport");
 const configPassport = require("../passport/passport"); // required to be able to access passport.js strategy logic even when it isn't used
 const jwt = require("jsonwebtoken");
 
-//-------------------------- TODOS BELOW WITHOUT LOGIN --------------------------//
-/*
-// Add Todo
-router.post("/newposttodo", (req, res) => {
-	const newContent = new PostTodo({
-		title: req.body.title,
-		content: req.body.content,
-		completed: req.body.completed,
-	});
-	newContent.save((err) => {
-		if (err) {
-			res.status(500).json({ message: "Internal server error" });
-		} else {
-			res.status(200).json({ message: "Succesfully posted" });
-		}
-	});
-});
-
-// Get all Todos
-router.get("/gettodos", (req, res) => {
-	PostTodo.find({}, (err, todos) => {
-		if (err) {
-			res.status(500).json({ message: "Internal server error" });
-		} else {
-			res.status(200).json({ todos });
-		}
-	});
-});
-
-// Get a specific Todo
-router.get("/gettodo/:id", (req, res) => {
-	const _id = req.params.id;
-	PostTodo.findById(_id, (err, todo) => {
-		// object destructuring to only get title + content and not the entire object
-		const { title, content, completed } = todo;
-		if (err) {
-			res.status(500).json({ message: "Internal server error" });
-		} else {
-			res.status(200).json({ title, content, completed });
-		}
-	});
-});
-*/
 // -------------------------- TODOS WITH LOGINS -------------------------- //
 // create new todo for user
 router.post(
@@ -116,50 +73,8 @@ router.get(
 			});
 	}
 );
-/*
-// get specific todo // testa med populate genom postens id eller något
-router.get(
-	"/getspecificusertodo/:id",
-	passport.authenticate("jwt", { session: false }),
-	(req, res) => {
-		const postId = req.params.id;
-		UserModel.findById({ _id: req.user.id })
-			.populate({ path: "postTodo", select: postId })
-			.exec((err, user) => {
-				if (err) {
-					res.status(500).json({
-						message: {
-							msgBody: "An error occurred",
-							msgError: true,
-						},
-					});
-				} else {
-					res.status(200).json({
-						postTodo: user.postTodo,
-						isAuthenticated: true,
-						msgError: false,
-					});
-				}
-			});
-	}
-);
 
-router.get(
-	"/getspecificusertodo/:id",
-	passport.authenticate("jwt", { session: false }),
-	(req, res) => {
-		const postId = req.params.id;
-		UserModel.findById({ _id: req.user.id, ObjectId: postId });
-		const { title, content, completed } = todo;
-		if (err) {
-			res.status(500).json({ message: "Internal server error" });
-		} else {
-			res.status(200).json({ title, content, completed });
-		}
-	}
-);*/
-
-// Get a specific Todo // funkar men lite skevt i säkerheten ORIGINAL, DENNA FUNKAR
+// Get a specific Todo // funkar men lite skevt i säkerheten ORIGINAL, DENNA FUNKAR - RÖR INTE DENNA
 router.get(
 	"/getspecificusertodo/:id",
 	passport.authenticate("jwt", { session: false }),
@@ -176,33 +91,7 @@ router.get(
 		});
 	}
 );
-/*
-// Get a specific Todo // funkar men lite skevt i säkerheten
-router.get(
-	"/getspecificusertodo/:id",
-	passport.authenticate("jwt", { session: false }),
-	(req, res) => {
-		const _id = req.params.id;
-		const userId = req.user.id;
-		PostTodo.findById(_id, (err, todo) => {
-			// object destructuring to only get title + content + completed and not the entire object
-			const { title, content, completed } = todo;
-			UserModel.findById(userId, (error, yeah) => {
-				if (error) {
-					res.status(500).json({ message: "Internal server error" });
-				} else {
-					res.status(200).json({ title, content, completed });
-				}
-			});
-			if (err) {
-				res.status(500).json({ message: "Internal server error" });
-			} else {
-				//res.status(200).json({ title, content, completed });
-			}
-		});
-	}
-);
-*/
+
 // edit / update todo post
 router.put(
 	"/updatetodo/:id",
@@ -252,7 +141,7 @@ router.delete(
 	}
 );
 
-// -------------------------- REGISTRATION, LOGIN -------------------------- //
+// -------------------------- REGISTRATION, LOGIN, AUTHENTICATION, LOGOUT -------------------------- //
 
 const createJsonWebToken = (userId) => {
 	return jwt.sign(
