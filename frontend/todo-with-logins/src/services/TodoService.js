@@ -1,7 +1,7 @@
 const TodoService = {
 	getPostedTodos: async () => {
 		try {
-			const res = await fetch("/api/gettodos");
+			const res = await fetch("/api/getusertodo");
 			if (res.status !== 401) {
 				const data = await res.json();
 				return data;
@@ -20,7 +20,7 @@ const TodoService = {
 	},
 	newTodo: async (todo) => {
 		try {
-			const res = await fetch("/api/newposttodo", {
+			const res = await fetch("/api/usersnewtodo", {
 				method: "post",
 				body: JSON.stringify(todo),
 				headers: {
@@ -56,7 +56,7 @@ const TodoService = {
 						msgBody: "Something went wrong while deleting the todo",
 						msgError: true,
 					},
-				}
+				};
 			}
 		} catch (error) {
 			return { error: error };
