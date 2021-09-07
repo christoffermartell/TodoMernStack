@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Todo from "./todo";
 import TodoService from "../services/TodoService";
+import Title from "./title";
 
 const AllTodos = () => {
 	const [todos, setTodos] = useState([]);
@@ -12,15 +13,14 @@ const AllTodos = () => {
 
 	const getPostedTodos = async () => {
 		const data = await TodoService.getPostedTodos();
-		if (data && data.todos) {
-			setTodos(data.todos);
+		if (data && data.postTodo) {
+			setTodos(data.postTodo);
 		}
 	};
 
 	useEffect(() => {
 		getPostedTodos();
 	}, []);
-	//	console.log("todos useState", todos);
 
 	const handleInput = (e) => {
 		setPostTodo({ ...postTodo, [e.target.name]: e.target.value });
@@ -32,7 +32,7 @@ const AllTodos = () => {
 		if (data && !data.message.msgError) {
 			const data = await TodoService.getPostedTodos();
 			if (data && !data.msgError) {
-				setTodos(data.todos);
+				setTodos(data.postTodo);
 				resetFormFields();
 			}
 		}
@@ -51,7 +51,7 @@ const AllTodos = () => {
 		if (data && !data.message.msgError) {
 			const data = await TodoService.getPostedTodos();
 			if (data && !data.msgError) {
-				setTodos(data.todos);
+				setTodos(data.postTodo);
 			}
 		}
 	};
@@ -61,7 +61,7 @@ const AllTodos = () => {
 		if (data && !data.message.msgError) {
 			const data = await TodoService.getPostedTodos();
 			if (data && !data.msgError) {
-				setTodos(data.todos);
+				setTodos(data.postTodo);
 			}
 		}
 	};
@@ -72,7 +72,8 @@ const AllTodos = () => {
 	};
 
 	return (
-		<div>
+		<div style={{ maxWidth: "60rem", textAlign: "center", margin: "auto" }}>
+			<Title></Title>
 			<form onSubmit={saveTodo}>
 				<input
 					required
