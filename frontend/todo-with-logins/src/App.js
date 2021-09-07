@@ -11,10 +11,8 @@ import { Register } from "./components/views/Register";
 import { Navbar } from "./components/general/Navbar";
 
 function App() {
-	// useEffect för att hämta från backend ( API )
-
 	return (
-		<Router>
+		<Router className="container">
 			<Navbar />
 			<Route exact path="/" component={AllTodos} />
 			<Route exact path="/account" component={Account} />
