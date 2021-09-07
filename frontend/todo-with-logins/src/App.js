@@ -4,6 +4,8 @@ import Title from "./components/title";
 import todo from "./components/todo";
 import AllTodos from "./components/allTodos";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { PrivateRoute } from "./hocs/PrivateRoute";
+import { UnPrivateRoute } from "./hocs/UnPrivateRoute";
 
 import { Account } from "./components/views/Account";
 import { Login } from "./components/views/Login";
@@ -14,16 +16,10 @@ function App() {
 	return (
 		<Router className="container">
 			<Navbar />
-			<Route exact path="/" component={AllTodos} />
-			<Route exact path="/account" component={Account} />
-			<Route exact path="/login" component={Login} />
-			<Route exact path="/register" component={Register} />
-
-			<div className="container">
-				{/* <Title /> */}
-				{/* <TodoList setTodoInputs={setTodoInputs} /> */}
-				{/* {<AllTodos></AllTodos>} */}
-			</div>
+			<PrivateRoute exact path="/" component={AllTodos} />
+			<PrivateRoute exact path="/account" component={Account} />
+			<UnPrivateRoute exact path="/login" component={Login} />
+			<UnPrivateRoute exact path="/register" component={Register} />
 		</Router>
 	);
 }
