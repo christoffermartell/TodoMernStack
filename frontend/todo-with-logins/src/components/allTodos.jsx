@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import TodoService from "../services/TodoService";
 import Title from "./title";
 import Modal from "react-modal";
+import Todo from "./todo";
 
 const AllTodos = () => {
 	const [todos, setTodos] = useState([]);
