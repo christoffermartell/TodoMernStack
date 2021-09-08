@@ -15,10 +15,10 @@ const AllTodos = () => {
 		title: "",
 		content: "",
 	});
-    const [todoId, setTodoId] = useState("");
+	const [todoId, setTodoId] = useState("");
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 
-    Modal.setAppElement(document.getElementById("root"));
+	Modal.setAppElement(document.getElementById("root"));
 
 	const openModal = (title, content, id) => {
 		setModalIsOpen(true);
@@ -26,7 +26,7 @@ const AllTodos = () => {
 			title: title,
 			content: content,
 		});
-        setTodoId(id);
+		setTodoId(id);
 	};
 
 	const closeModal = () => {
@@ -37,15 +37,15 @@ const AllTodos = () => {
 		});
 	};
 
-    const customStyles = {
-        content: {
-            margin: "auto",
-            marginTop: "1rem",
-            maxHeight: "40%",
-            minWidth: "50%",
-            maxWidth: "70%"
-        }
-    };
+	const customStyles = {
+		content: {
+			margin: "auto",
+			marginTop: "1rem",
+			maxHeight: "40%",
+			minWidth: "50%",
+			maxWidth: "70%",
+		},
+	};
 
 	const getPostedTodos = async () => {
 		const data = await TodoService.getPostedTodos();
@@ -114,12 +114,12 @@ const AllTodos = () => {
 	const updateTodo = async (e) => {
 		e.preventDefault();
 		const data = await TodoService.updateTodo(editTodo, todoId);
-        if (data && !data.message.msgError) {
+		if (data && !data.message.msgError) {
 			const data = await TodoService.getPostedTodos();
 			if (data && !data.msgError) {
 				setTodos(data.postTodo);
-                setTodoId("");
-                closeModal();
+				setTodoId("");
+				closeModal();
 			}
 		}
 	};
@@ -158,7 +158,14 @@ const AllTodos = () => {
 			<div>
 				{todos.map((posts) => {
 					return (
-						<div key={posts._id}>
+						<div
+							key={posts._id}
+							style={{
+								textDecoration: posts.completed
+									? "line-through"
+									: "",
+							}}
+						>
 							<h4 className="text-dark text-center p-1 bg-light border-bottom ">
 								{posts.title}
 								<i
@@ -169,7 +176,11 @@ const AllTodos = () => {
 									className="fa fa-pencil-square-o fa-sm m-1 float-end"
 									aria-hidden="true"
 									onClick={() =>
-										openModal(posts.title, posts.content, posts._id)
+										openModal(
+											posts.title,
+											posts.content,
+											posts._id
+										)
 									}
 								></i>
 								<input
@@ -212,7 +223,10 @@ const AllTodos = () => {
 						>
 							Cancel
 						</button>
-						<button type="submit" className="btn btn-success m-1 float-end">
+						<button
+							type="submit"
+							className="btn btn-success m-1 float-end"
+						>
 							Save
 						</button>
 					</form>
