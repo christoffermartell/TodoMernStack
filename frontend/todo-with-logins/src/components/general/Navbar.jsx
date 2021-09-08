@@ -22,6 +22,7 @@ export const Navbar = () => {
 		return (
 			<>
 				<NavLink to="/">Home</NavLink>
+				<NavLink to="/about">About</NavLink>
 				<NavLink to="/account">Account</NavLink>
 				<button onClick={logout}>Logout</button>
 			</>
@@ -32,6 +33,7 @@ export const Navbar = () => {
 		return (
 			<>
 				<NavLink to="/">Home</NavLink>
+				<NavLink to="/about">About</NavLink>
 				<NavLink to="/login">Login</NavLink>
 				<NavLink to="/register">Register</NavLink>
 			</>

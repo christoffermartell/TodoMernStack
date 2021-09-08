@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Todo from "./todo";
 import TodoService from "../services/TodoService";
 import Title from "./title";
 import Modal from "react-modal";
