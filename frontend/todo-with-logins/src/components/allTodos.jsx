@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Todo from "./todo";
 import TodoService from "../services/TodoService";
 import Title from "./title";
+import Modal from "react-modal";
 
 const AllTodos = () => {
 	const [todos, setTodos] = useState([]);
@@ -10,6 +11,41 @@ const AllTodos = () => {
 		content: "",
 		completed: false,
 	});
+	const [editTodo, setEditTodo] = useState({
+		title: "",
+		content: "",
+	});
+    const [todoId, setTodoId] = useState("");
+	const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    Modal.setAppElement(document.getElementById("root"));
+
+	const openModal = (title, content, id) => {
+		setModalIsOpen(true);
+		setEditTodo({
+			title: title,
+			content: content,
+		});
+        setTodoId(id);
+	};
+
+	const closeModal = () => {
+		setModalIsOpen(false);
+		setEditTodo({
+			title: "",
+			content: "",
+		});
+	};
+
+    const customStyles = {
+        content: {
+            margin: "auto",
+            marginTop: "1rem",
+            maxHeight: "40%",
+            minWidth: "50%",
+            maxWidth: "70%"
+        }
+    };
 
 	const getPostedTodos = async () => {
 		const data = await TodoService.getPostedTodos();
@@ -56,6 +92,11 @@ const AllTodos = () => {
 		}
 	};
 
+	const handleUpdateFinished = (e, id) => {
+		const isChecked = e.target.checked;
+		updateFinished(isChecked, id);
+	};
+
 	const updateFinished = async (isChecked, id) => {
 		const data = await TodoService.updateFinished(isChecked, id);
 		if (data && !data.message.msgError) {
@@ -66,9 +107,21 @@ const AllTodos = () => {
 		}
 	};
 
-	const handleUpdateFinished = (e, id) => {
-		const isChecked = e.target.checked;
-		updateFinished(isChecked, id);
+	const handleModalInput = (e) => {
+		setEditTodo({ ...editTodo, [e.target.name]: e.target.value });
+	};
+
+	const updateTodo = async (e) => {
+		e.preventDefault();
+		const data = await TodoService.updateTodo(editTodo, todoId);
+        if (data && !data.message.msgError) {
+			const data = await TodoService.getPostedTodos();
+			if (data && !data.msgError) {
+				setTodos(data.postTodo);
+                setTodoId("");
+                closeModal();
+			}
+		}
 	};
 
 	return (
@@ -109,8 +162,15 @@ const AllTodos = () => {
 							<h4 className="text-dark text-center p-1 bg-light border-bottom ">
 								{posts.title}
 								<i
-									className="far fa-times-circle fa-sm  m-1 text-danger float-start"
+									className="far fa-times-circle fa-sm m-1 text-danger float-start"
 									onClick={() => deleteTodo(posts._id)}
+								></i>
+								<i
+									className="fa fa-pencil-square-o fa-sm m-1 float-end"
+									aria-hidden="true"
+									onClick={() =>
+										openModal(posts.title, posts.content, posts._id)
+									}
 								></i>
 								<input
 									defaultChecked={posts.completed}
@@ -126,6 +186,37 @@ const AllTodos = () => {
 						</div>
 					);
 				})}
+
+				<Modal isOpen={modalIsOpen} style={customStyles}>
+					<h1>Edit todo</h1>
+					<form onSubmit={updateTodo}>
+						<input
+							onChange={handleModalInput}
+							value={editTodo.title}
+							name="title"
+							type="text"
+							className="form-control rounded-0 mx-1 my-2"
+							placeholder="Title"
+						></input>
+						<input
+							onChange={handleModalInput}
+							value={editTodo.content}
+							name="content"
+							type="text"
+							className="form-control rounded-0 m-1 mb-3"
+							placeholder="Todo text"
+						></input>
+						<button
+							className="btn btn-danger m-1 float-end"
+							onClick={closeModal}
+						>
+							Cancel
+						</button>
+						<button type="submit" className="btn btn-success m-1 float-end">
+							Save
+						</button>
+					</form>
+				</Modal>
 			</div>
 		</div>
 	);

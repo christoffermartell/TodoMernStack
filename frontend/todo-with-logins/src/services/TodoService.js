@@ -88,6 +88,30 @@ const TodoService = {
 			return { error: error };
 		}
 	},
+    updateTodo: async (todo, id) => {
+        try {
+            const res = await fetch(`/api/updatetodo/${id}`, {
+                method: "put",
+                body: JSON.stringify(todo),
+                headers: {
+                    "Content-type": "application/json",
+                },
+            });
+            if (res.status !== 401) {
+                const data = await res.json();
+                return data;
+            } else {
+                return {
+                    message: {
+                        msgBody: "Something went wrong while updating the todo",
+                        msgError: true,
+                    },
+                };
+            }
+        } catch (error) {
+            return { error: error };
+        }
+    },
 };
 
 export default TodoService;
